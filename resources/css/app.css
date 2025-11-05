@@ -1,11 +1,123 @@
+/* --- Fonts --- */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* --- Tailwind v4 --- */
 @import 'tailwindcss';
 
+/* --- Sources (scan JIT) --- */
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
-@source '../**/*.js';
+@source '../**/*.{js,ts,vue}';
+@source '../../resources/**/*.{php,js,ts,vue,blade.php}';
 
+/* --- Thème (tokens) --- */
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    /* Typo */
+    --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-serif: 'Canela', 'Cormorant Garamond', ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+
+    /* Palette “Cosmos” */
+    --color-abyss: #0B1220;
+    --color-eclipse: #121C2C;
+    --color-celestial: #5C7AE5;
+    --color-aurora: #9CB3FF;
+    --color-moonlight: #E7EBF9;
+    --color-comet: #AEB7D4;
+
+    --color-nebula-pink: #E1A9FF;
+    --color-solar-flare: #FFAE6F;
+    --color-stellar-mint: #71FFD6;
+    --color-crimson-nova: #FF5A73;
+
+    --blur-glass: 12px;
+
+    /* Texte & fonds */
+    --color-cosmos-bg: var(--color-abyss);
+    --color-cosmos-text: var(--color-moonlight);
+    --color-cosmos-text-muted: var(--color-comet);
+
+    /* Accents (header, boutons, etc.) */
+    --color-cosmos-accent-violet: #7c4dff;
+    --color-cosmos-accent-turquoise: #2dd4bf;
+    --color-cosmos-accent-blue: #3b82f6;
+}
+
+/* --- Base --- */
+@layer base {
+    html, body { height: 100%; }
+
+    body {
+        @apply bg-abyss text-moonlight font-sans antialiased;
+        background-image:
+            radial-gradient(circle at 20% 50%, rgba(92, 122, 229, 0.15), transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(156, 179, 255, 0.10), transparent 50%);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-serif;
+        text-transform: lowercase;
+        letter-spacing: 0.01em;
+    }
+
+    small, .text-muted { color: var(--color-comet); }
+
+    /* Motion-safe par défaut */
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    }
+}
+
+/* --- Components --- */
+@layer components {
+    .glass-card {
+        background: rgba(12, 18, 32, 0.8);
+        backdrop-filter: blur(var(--blur-glass)) saturate(180%);
+        -webkit-backdrop-filter: blur(var(--blur-glass)) saturate(180%);
+        border: 1px solid rgba(156, 179, 255, 0.25);
+        box-shadow:
+            0 8px 32px rgba(0, 0, 0, 0.10),
+            inset 0 1px 0 rgba(255, 255, 255, 0.10);
+        @apply rounded-2xl transition-all duration-300;
+    }
+
+    .glass-card:hover {
+        background: rgba(12, 18, 32, 0.86);
+        border-color: rgba(156, 179, 255, 0.35);
+    }
+
+    .btn-primary {
+        @apply inline-flex items-center justify-center px-6 py-3 rounded-xl font-medium text-white transition-all duration-300;
+        @apply hover:shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-celestial/60;
+        background-image: linear-gradient(to right, var(--color-celestial), var(--color-aurora));
+    }
+
+    .btn-secondary {
+        @apply inline-flex items-center justify-center px-6 py-3 rounded-xl font-medium transition-colors duration-300;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(var(--blur-glass)) saturate(180%);
+        -webkit-backdrop-filter: blur(var(--blur-glass)) saturate(180%);
+        border: 1px solid rgba(156, 179, 255, 0.25);
+    }
+}
+
+/* --- Utilities --- */
+@layer utilities {
+    .overlay-frosted { background-color: rgba(255, 255, 255, 0.08); }
+    .overlay-deep { background-color: rgba(12, 18, 32, 0.6); }
+    .border-glow { box-shadow: 0 0 0 1px rgba(156, 179, 255, 0.35) inset; }
+    .text-glow { text-shadow: 0 0 12px rgba(156, 179, 255, 0.35); }
+
+    .accent-alt { color: var(--color-nebula-pink); }
+    .accent-action { color: var(--color-solar-flare); }
+    .accent-success { color: var(--color-stellar-mint); }
+    .accent-error { color: var(--color-crimson-nova); }
+
+    /* Texte en dégradé */
+    .text-gradient {
+        background-image: linear-gradient(to right, var(--color-cosmos-accent-violet), var(--color-cosmos-accent-turquoise));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
 }
